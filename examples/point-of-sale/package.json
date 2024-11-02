@@ -19,7 +19,7 @@
         "proxy": "local-ssl-proxy --source 3001 --target 3000"
     },
     "dependencies": {
-        "@solana/pay": "^0.2.4",
+        "@solana/pay": "https://gitpkg.vercel.app/0x2539/solana-pay/core?fix/latest-blockhash-build",
         "@solana/spl-token": "^0.3.5",
         "@solana/wallet-adapter-base": "^0.9.16",
         "@solana/wallet-adapter-react": "^0.15.18",
