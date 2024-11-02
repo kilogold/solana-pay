@@ -81,9 +81,11 @@ export const PaymentProvider: FC<PaymentProviderProps> = ({ children }) => {
                 url.searchParams.append('message', message);
             }
 
-            return encodeURL({ link: url });
+            const result = encodeURL({ link: url });
+            console.log("TRANSACTION REQUEST: ", result)
+            return result;
         } else {
-            return encodeURL({
+            const result = encodeURL({
                 recipient,
                 amount,
                 splToken,
@@ -92,6 +94,8 @@ export const PaymentProvider: FC<PaymentProviderProps> = ({ children }) => {
                 message,
                 memo,
             });
+            console.log("TRANSFER REQUEST: ", result)
+            return result;
         }
     }, [link, recipient, amount, splToken, reference, label, message, memo]);
 
@@ -158,34 +162,34 @@ export const PaymentProvider: FC<PaymentProviderProps> = ({ children }) => {
     }, [status, connectWallet, publicKey, url, connection, sendTransaction]);
 
     // When the status is pending, poll for the transaction using the reference key
-    useEffect(() => {
-        if (!(status === PaymentStatus.Pending && reference && !signature)) return;
-        let changed = false;
+    // useEffect(() => {
+    //     if (!(status === PaymentStatus.Pending && reference && !signature)) return;
+    //     let changed = false;
 
-        const interval = setInterval(async () => {
-            let signature: ConfirmedSignatureInfo;
-            try {
-                signature = await findReference(connection, reference);
+    //     const interval = setInterval(async () => {
+    //         let signature: ConfirmedSignatureInfo;
+    //         try {
+    //             signature = await findReference(connection, reference);
 
-                if (!changed) {
-                    clearInterval(interval);
-                    setSignature(signature.signature);
-                    setStatus(PaymentStatus.Confirmed);
-                    navigate('/confirmed', true);
-                }
-            } catch (error: any) {
-                // If the RPC node doesn't have the transaction signature yet, try again
-                if (!(error instanceof FindReferenceError)) {
-                    console.error(error);
-                }
-            }
-        }, 250);
+    //             if (!changed) {
+    //                 clearInterval(interval);
+    //                 setSignature(signature.signature);
+    //                 setStatus(PaymentStatus.Confirmed);
+    //                 navigate('/confirmed', true);
+    //             }
+    //         } catch (error: any) {
+    //             // If the RPC node doesn't have the transaction signature yet, try again
+    //             if (!(error instanceof FindReferenceError)) {
+    //                 console.error(error);
+    //             }
+    //         }
+    //     }, 250);
 
-        return () => {
-            changed = true;
-            clearInterval(interval);
-        };
-    }, [status, reference, signature, connection, navigate]);
+    //     return () => {
+    //         changed = true;
+    //         clearInterval(interval);
+    //     };
+    // }, [status, reference, signature, connection, navigate]);
 
     // When the status is confirmed, validate the transaction against the provided params
     useEffect(() => {

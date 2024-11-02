@@ -16,7 +16,7 @@
         "lint": "next lint",
         "fmt": "prettier --write '{*,**/*}.{js,ts,jsx,tsx,json}'",
         "nuke": "shx rm -rf node_modules package-lock.json || true",
-        "proxy": "local-ssl-proxy --source 3001 --target 3000"
+        "proxy": "local-ssl-proxy --key 192.168.50.168-key.pem --cert 192.168.50.168.pem --source 3001 --target 3000"
     },
     "dependencies": {
         "@solana/pay": "^0.2.4",

@@ -62,6 +62,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
     const message = messageParam || undefined;
 
     // Account provided in the transaction request body by the wallet.
+    console.log("KELVIN", request.body)
     const accountField = request.body?.account;
     if (!accountField) throw new Error('missing account');
     if (typeof accountField !== 'string') throw new Error('invalid account');
